@@ -22,6 +22,7 @@ public class Participante {
     private int id;
     private String nombreCompleto;
 
-    @OneToMany
+    @ManyToMany(mappedBy = "participantes")
+    @Builder.Default
     private List<Taller> talleres = new ArrayList<>();
 }

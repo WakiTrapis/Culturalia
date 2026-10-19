@@ -24,9 +24,16 @@ public class Taller {
     private String fechaHoraFin;
 
     @ManyToOne
+    @JoinColumn(name = "organizador_id")
     private Organizador organizador;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "taller_participantes",
+            joinColumns = @JoinColumn(name = "taller_id"),
+            inverseJoinColumns = @JoinColumn(name = "participante_id")
+    )
+    @Builder.Default
     private List<Participante> participantes = new ArrayList<>();
 
 }

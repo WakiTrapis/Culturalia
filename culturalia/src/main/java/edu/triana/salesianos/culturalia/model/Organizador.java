@@ -23,9 +23,10 @@ public class Organizador {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;
+    private String nombre;
     private String email;
 
-    @OneToMany
+    @OneToMany(mappedBy = "organizador")
+    @Builder.Default
     private List<Taller> talleres = new ArrayList<>();
 }
