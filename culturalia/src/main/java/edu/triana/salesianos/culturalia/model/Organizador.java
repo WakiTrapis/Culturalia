@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -24,5 +27,5 @@ public class Organizador {
     private String email;
 
     @OneToMany
-    private Taller taller;
+    private List<Taller> talleres = new ArrayList<>();
 }

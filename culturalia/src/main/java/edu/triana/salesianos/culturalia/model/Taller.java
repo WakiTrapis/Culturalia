@@ -26,7 +26,7 @@ public class Taller {
     @ManyToOne
     private Organizador organizador;
 
-    @ManyToMany
+    @OneToMany
     private List<Participante> participantes = new ArrayList<>();
 
 }

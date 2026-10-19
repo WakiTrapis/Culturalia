@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,6 +22,6 @@ public class Participante {
     private int id;
     private String nombreCompleto;
 
-    @ManyToMany
-    private Taller taller;
+    @OneToMany
+    private List<Taller> talleres = new ArrayList<>();
 }
