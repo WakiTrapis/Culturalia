@@ -18,7 +18,7 @@ public class Taller {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private String titulo;
     private String fechaHoraInicio;
     private String fechaHoraFin;

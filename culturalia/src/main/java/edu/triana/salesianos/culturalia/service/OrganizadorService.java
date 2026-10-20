@@ -2,7 +2,7 @@ package edu.triana.salesianos.culturalia.service;
 
 import edu.triana.salesianos.culturalia.dto.CrearOrganizadorDTO;
 import edu.triana.salesianos.culturalia.dto.OrganizadorResponseDTO;
-import edu.triana.salesianos.culturalia.error.OrganizadorNotFoundException;
+import edu.triana.salesianos.culturalia.error.notFound.OrganizadorNotFoundException;
 import edu.triana.salesianos.culturalia.model.Organizador;
 import edu.triana.salesianos.culturalia.repository.OrganizadorRepository;
 import lombok.RequiredArgsConstructor;

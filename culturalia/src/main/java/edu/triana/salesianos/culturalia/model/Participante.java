@@ -19,7 +19,7 @@ public class Participante {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private String nombreCompleto;
 
     @ManyToMany(mappedBy = "participantes")
