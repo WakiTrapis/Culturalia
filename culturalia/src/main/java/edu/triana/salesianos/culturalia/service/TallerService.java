@@ -48,4 +48,10 @@ public class TallerService {
                 .map(TallerResponseDTO::of)
                 .toList();
     }
+
+    public TallerResponseDTO findById(Long id) {
+        return tallerRepository.findById(id)
+                .map(TallerResponseDTO::of)
+                .orElseThrow(() -> new TallerNotFoundException(id));
+    }
 }

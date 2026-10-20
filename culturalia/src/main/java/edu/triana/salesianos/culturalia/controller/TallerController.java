@@ -93,4 +93,23 @@ public class TallerController {
     public ResponseEntity<List<TallerResponseDTO>> findAll() {
         return ResponseEntity.ok(tallerService.findAll());
     }
+
+
+    @Operation(summary = "Obtener taller por ID", description = "Devuelve la información detallada de un taller por su ID.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Taller encontrado",
+                    content = @Content(schema = @Schema(implementation = TallerResponseDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Taller no encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<TallerResponseDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(tallerService.findById(id));
+    }
 }
