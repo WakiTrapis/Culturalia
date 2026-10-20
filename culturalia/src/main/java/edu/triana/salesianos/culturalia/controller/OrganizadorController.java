@@ -140,4 +140,23 @@ public class OrganizadorController {
     public ResponseEntity<List<OrganizadorResponseDTO>> findAll() {
         return ResponseEntity.ok(organizadorService.findAll());
     }
+
+
+    @Operation(summary = "Obtener organizador por ID", description = "Devuelve el detalle de un organizador según su ID.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Organizador encontrado",
+                    content = @Content(schema = @Schema(implementation = OrganizadorResponseDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Organizador no encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<OrganizadorResponseDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(organizadorService.findById(id));
+    }
 }

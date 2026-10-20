@@ -37,4 +37,9 @@ public class OrganizadorService {
                 .map(OrganizadorResponseDTO::of)
                 .toList();
     }
+    public OrganizadorResponseDTO findById(Long id) {
+        return organizadorRepository.findById(id)
+                .map(OrganizadorResponseDTO::of)
+                .orElseThrow(() -> new OrganizadorNotFoundException(id));
+    }
 }
