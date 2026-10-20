@@ -31,4 +31,14 @@ public class GlobalExceptionHandler {
         problemDetail.setType(URI.create("https://culturalia.es/errors/taller-ya-existe"));
         return problemDetail;
     }
+    @ExceptionHandler(ParticipanteWasFoundException.class)
+    public ProblemDetail handleParticipanteYaExiste(ParticipanteWasFoundException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+        problem.setTitle("Participante Ya Existente");
+        problem.setType(URI.create("https://culturalia.es/errors/participante-ya-existe"));
+        return problem;
+    }
 }
