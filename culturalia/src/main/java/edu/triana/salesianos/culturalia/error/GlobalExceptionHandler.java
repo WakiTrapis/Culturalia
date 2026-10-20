@@ -41,4 +41,27 @@ public class GlobalExceptionHandler {
         problem.setType(URI.create("https://culturalia.es/errors/participante-ya-existe"));
         return problem;
     }
+
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail handleIllegalArgumentException(IllegalArgumentException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+        problem.setTitle("Solicitud Inválida");
+        problem.setType(URI.create("https://culturalia.es/errors/bad-request"));
+        return problem;
+    }
+
+    @ExceptionHandler(ParticipanteAlreadyRegisteredException.class)
+    public ProblemDetail handleParticipanteYaInscrito(ParticipanteAlreadyRegisteredException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+        problem.setTitle("Participante Ya Inscrito");
+        problem.setType(URI.create("https://culturalia.es/errors/participante-ya-inscrito"));
+        return problem;
+    }
 }

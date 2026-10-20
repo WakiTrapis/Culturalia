@@ -112,4 +112,49 @@ public class TallerController {
     public ResponseEntity<TallerResponseDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(tallerService.findById(id));
     }
+
+
+    @Operation(summary = "Inscribir un participante en un taller", description = "Asocia un participante existente a la lista de inscritos de un taller.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Participante inscrito con éxito",
+                    content = @Content(schema = @Schema(implementation = TallerResponseDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Taller o Participante no encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "El participante ya se encuentra inscrito en el taller",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
+    })
+    @PostMapping("/{tallerId}/participantes/{participanteId}")
+    public ResponseEntity<TallerResponseDTO> addParticipante(
+            @PathVariable Long tallerId,
+            @PathVariable Long participanteId) {
+        return ResponseEntity.ok(tallerService.addParticipanteToTaller(tallerId, participanteId));
+    }
+
+    @Operation(summary = "Eliminar la inscripción de un participante", description = "Desvincula a un participante de un taller sin eliminar ninguna de las dos entidades.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Inscripción eliminada o no existía vinculación previa"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Taller o Participante no encontrado"
+            )
+    })
+    @DeleteMapping("/{tallerId}/participantes/{participanteId}")
+    public ResponseEntity<Void> removeParticipante(
+            @PathVariable Long tallerId,
+            @PathVariable Long participanteId) {
+        tallerService.removeParticipanteFromTaller(tallerId, participanteId);
+        return ResponseEntity.noContent().build();
+    }
 }
