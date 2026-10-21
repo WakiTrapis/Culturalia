@@ -159,4 +159,12 @@ public class OrganizadorController {
     public ResponseEntity<OrganizadorResponseDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(organizadorService.findById(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<OrganizadorResponseDTO> update(
+            @PathVariable Long id,
+            @Valid @RequestBody CrearOrganizadorDTO dto) {
+        return ResponseEntity.ok(organizadorService.update(id, dto));
+    }
+
 }

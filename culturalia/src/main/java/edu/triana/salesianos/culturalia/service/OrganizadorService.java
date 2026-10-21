@@ -42,4 +42,14 @@ public class OrganizadorService {
                 .map(OrganizadorResponseDTO::of)
                 .orElseThrow(() -> new OrganizadorNotFoundException(id));
     }
+
+    public OrganizadorResponseDTO update(Long id, CrearOrganizadorDTO dto) {
+        Organizador organizador = organizadorRepository.findById(id)
+                .orElseThrow(() -> new OrganizadorNotFoundException(id));
+
+        organizador.setNombre(dto.getNombre());
+        organizador.setEmail(dto.getEmail());
+
+        return OrganizadorResponseDTO.of(organizadorRepository.save(organizador));
+    }
 }
