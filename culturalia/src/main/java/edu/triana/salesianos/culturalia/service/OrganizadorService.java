@@ -52,4 +52,11 @@ public class OrganizadorService {
 
         return OrganizadorResponseDTO.of(organizadorRepository.save(organizador));
     }
+
+    public void deleteById(Long id) {
+        if (!organizadorRepository.existsById(id)) {
+            throw new OrganizadorNotFoundException(id);
+        }
+        organizadorRepository.deleteById(id);
+    }
 }

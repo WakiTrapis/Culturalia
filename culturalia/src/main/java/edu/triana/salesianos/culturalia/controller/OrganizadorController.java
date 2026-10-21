@@ -159,7 +159,19 @@ public class OrganizadorController {
     public ResponseEntity<OrganizadorResponseDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(organizadorService.findById(id));
     }
-
+    @Operation(summary = "Editar un organizador", description = "Devuelve el organizador modificado.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Organizador editado",
+                    content = @Content(schema = @Schema(implementation = OrganizadorResponseDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Organizador no encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
+    })
     @PutMapping("/{id}")
     public ResponseEntity<OrganizadorResponseDTO> update(
             @PathVariable Long id,
@@ -167,4 +179,23 @@ public class OrganizadorController {
         return ResponseEntity.ok(organizadorService.update(id, dto));
     }
 
+
+    @Operation(summary = "Editar un organizador", description = "Devuelve el cuerpo vacio.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Not content",
+                    content = @Content(schema = @Schema(implementation = OrganizadorResponseDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Organizador no encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class ))
+            )
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        organizadorService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

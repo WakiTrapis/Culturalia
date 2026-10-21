@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -34,6 +35,6 @@ public class Taller {
             inverseJoinColumns = @JoinColumn(name = "participante_id")
     )
     @Builder.Default
-    private List<Participante> participantes = new ArrayList<>();
+    private HashSet<Participante> participantes = new HashSet<>();
 
 }

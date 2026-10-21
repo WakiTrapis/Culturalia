@@ -6,9 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.HashSet;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -24,5 +23,5 @@ public class Participante {
 
     @ManyToMany(mappedBy = "participantes")
     @Builder.Default
-    private List<Taller> talleres = new ArrayList<>();
+    private HashSet<Taller> talleres = new HashSet<>();
 }
