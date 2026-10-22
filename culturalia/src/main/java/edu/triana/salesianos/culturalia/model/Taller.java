@@ -1,5 +1,6 @@
 package edu.triana.salesianos.culturalia.model;
 
+import edu.triana.salesianos.culturalia.validation.FechaFinPosteriorAInicio;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.*;

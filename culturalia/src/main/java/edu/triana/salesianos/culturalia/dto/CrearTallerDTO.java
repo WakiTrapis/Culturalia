@@ -1,5 +1,6 @@
 package edu.triana.salesianos.culturalia.dto;
 
+import edu.triana.salesianos.culturalia.validation.FechaFinPosteriorAInicio;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FechaFinPosteriorAInicio
 @Builder
 public class CrearTallerDTO {
 
