@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface TallerRepository extends JpaRepository<Taller, Long> {
 
-    boolean existsByTitulo(String titulo);
+    boolean existsByTituloIgnoreCase(String titulo);
 
     @Query("SELECT DISTINCT t FROM Taller t LEFT JOIN FETCH t.organizador LEFT JOIN FETCH t.participantes")
     List<Taller> findAllWithAssociations();

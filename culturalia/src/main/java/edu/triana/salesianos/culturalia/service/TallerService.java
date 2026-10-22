@@ -30,7 +30,7 @@ public class TallerService {
     private final ParticipanteRepository participanteRepository;
 
     public TallerResponseDTO save(CrearTallerDTO dto) {
-        if (tallerRepository.existsByTitulo(dto.getTitulo())) {
+        if (tallerRepository.existsByTituloIgnoreCase(dto.getTitulo())) {
             throw new TallerWasFoundException("Ya existe un taller registrado con el título: " + dto.getTitulo());
         }
 
@@ -101,6 +101,33 @@ public class TallerService {
         return taller.getParticipantes().stream()
                 .map(ParticipanteResponseDTO::of)
                 .toList();
+    }
+
+    @Transactional
+    public TallerResponseDTO edit(Long id, CrearTallerDTO dto) {
+        Taller taller = tallerRepository.findByIdWithAssociations(id)
+                .orElseThrow(() -> new TallerNotFoundException(id));
+
+        String tituloLimpio = dto.getTitulo().trim();
+
+        if (!taller.getTitulo().equalsIgnoreCase(tituloLimpio) &&
+                tallerRepository.existsByTituloIgnoreCase(tituloLimpio)) {
+            throw new TallerWasFoundException(tituloLimpio);
+        }
+
+        taller.setTitulo(tituloLimpio);
+        taller.setFechaHoraInicio(String.valueOf(dto.getFechaHoraInicio()));
+        taller.setFechaHoraFin(String.valueOf(dto.getFechaHoraFin()));
+
+        if (dto.getOrganizadorId() != null) {
+            Organizador organizador = organizadorRepository.findById(dto.getOrganizadorId())
+                    .orElseThrow(() -> new OrganizadorNotFoundException(dto.getOrganizadorId()));
+            taller.setOrganizador(organizador);
+        } else {
+            taller.setOrganizador(null);
+        }
+
+        return TallerResponseDTO.of(tallerRepository.save(taller));
     }
 
 }

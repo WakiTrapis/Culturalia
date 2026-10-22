@@ -176,4 +176,33 @@ public class TallerController {
         tallerService.removeParticipanteFromTaller(tallerId, participanteId);
         return ResponseEntity.noContent().build();
     }
+
+
+    @Operation(
+            summary = "Editar un taller existente",
+            description = "Actualiza los datos de un taller existente según su ID. Valida que el título no esté duplicado y que la fecha de fin sea posterior a la de inicio."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Taller actualizado con éxito",
+                    content = @Content(schema = @Schema(implementation = TallerResponseDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos de entrada inválidos o título ya existente",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Taller u Organizador no encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<TallerResponseDTO> edit(
+            @PathVariable Long id,
+            @Valid @RequestBody CrearTallerDTO dto) {
+        return ResponseEntity.ok(tallerService.edit(id, dto));
+    }
 }
