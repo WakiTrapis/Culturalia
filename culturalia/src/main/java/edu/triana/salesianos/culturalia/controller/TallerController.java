@@ -205,4 +205,27 @@ public class TallerController {
             @Valid @RequestBody CrearTallerDTO dto) {
         return ResponseEntity.ok(tallerService.edit(id, dto));
     }
+
+
+    @Operation(
+            summary = "Eliminar un taller",
+            description = "Elimina un taller existente según su ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Taller eliminado con éxito (Sin contenido)"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Taller no encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        tallerService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+    
 }

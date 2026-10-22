@@ -130,4 +130,12 @@ public class TallerService {
         return TallerResponseDTO.of(tallerRepository.save(taller));
     }
 
+    @Transactional
+    public void delete(Long id) {
+        if (!tallerRepository.existsById(id)) {
+            throw new TallerNotFoundException(id);
+        }
+        tallerRepository.deleteById(id);
+    }
+
 }
