@@ -1,6 +1,7 @@
 package edu.triana.salesianos.culturalia.controller;
 
 import edu.triana.salesianos.culturalia.dto.CrearTallerDTO;
+import edu.triana.salesianos.culturalia.dto.ParticipanteResponseDTO;
 import edu.triana.salesianos.culturalia.dto.TallerResponseDTO;
 import edu.triana.salesianos.culturalia.service.TallerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -138,6 +139,24 @@ public class TallerController {
             @PathVariable Long participanteId) {
         return ResponseEntity.ok(tallerService.addParticipanteToTaller(tallerId, participanteId));
     }
+
+    @Operation(summary = "participantes de un taller", description = "Busca un taller por Id y muestra los participantes inscritos en ese taller.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista de participantes o lista vacia."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Taller no encontrado"
+            )
+    })
+    @GetMapping("/{tallerId}/participantes")
+    public ResponseEntity<List<ParticipanteResponseDTO>> getParticipantesByTallerId(@PathVariable Long tallerId) {
+        return ResponseEntity.ok(tallerService.getParticipantesByTallerId(tallerId));
+    }
+
+
 
     @Operation(summary = "Eliminar la inscripción de un participante", description = "Desvincula a un participante de un taller sin eliminar ninguna de las dos entidades.")
     @ApiResponses({

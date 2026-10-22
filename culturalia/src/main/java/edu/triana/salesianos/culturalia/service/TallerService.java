@@ -1,6 +1,7 @@
 package edu.triana.salesianos.culturalia.service;
 
 import edu.triana.salesianos.culturalia.dto.CrearTallerDTO;
+import edu.triana.salesianos.culturalia.dto.ParticipanteResponseDTO;
 import edu.triana.salesianos.culturalia.dto.TallerResponseDTO;
 import edu.triana.salesianos.culturalia.error.*;
 import edu.triana.salesianos.culturalia.error.notFound.OrganizadorNotFoundException;
@@ -14,8 +15,11 @@ import edu.triana.salesianos.culturalia.repository.ParticipanteRepository;
 import edu.triana.salesianos.culturalia.repository.TallerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -43,34 +47,38 @@ public class TallerService {
         return TallerResponseDTO.of(tallerRepository.save(nuevoTaller));
     }
 
+    @Transactional(readOnly = true)
     public List<TallerResponseDTO> findAll() {
-        List<Taller> talleres = tallerRepository.findAll();
-        if (talleres.isEmpty()) {
-            throw new TallerNotFoundException("No se han encontrado talleres registrados");
-        }
-        return talleres.stream()
+        return tallerRepository.findAllWithAssociations().stream()
                 .map(TallerResponseDTO::of)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public TallerResponseDTO findById(Long id) {
-        return tallerRepository.findById(id)
+        return tallerRepository.findByIdWithAssociations(id)
                 .map(TallerResponseDTO::of)
                 .orElseThrow(() -> new TallerNotFoundException(id));
     }
 
     public TallerResponseDTO addParticipanteToTaller(Long tallerId, Long participanteId) {
-        Taller taller = tallerRepository.findById(tallerId)
+        Taller taller = tallerRepository.findByIdWithAssociations(tallerId)
                 .orElseThrow(() -> new TallerNotFoundException(tallerId));
 
         Participante participante = participanteRepository.findById(participanteId)
                 .orElseThrow(() -> new ParticipanteNotFoundException(participanteId));
 
+        if (taller.getParticipantes() == null) {
+            taller.setParticipantes(new HashSet<>());
+        }
+
         if (taller.getParticipantes().contains(participante)) {
-            throw new ParticipanteAlreadyRegisteredException(tallerId, participanteId);
+            throw new ParticipanteAlreadyRegisteredException(participanteId, tallerId);
         }
 
         taller.getParticipantes().add(participante);
+        participante.getTalleres().add(taller);
+
         return TallerResponseDTO.of(tallerRepository.save(taller));
     }
 
@@ -86,4 +94,13 @@ public class TallerService {
             tallerRepository.save(taller);
         }
     }
+
+    public List<ParticipanteResponseDTO> getParticipantesByTallerId(Long tallerId){
+        Taller taller = tallerRepository.findById(tallerId)
+                .orElseThrow(() -> new TallerNotFoundException(tallerId));
+        return taller.getParticipantes().stream()
+                .map(ParticipanteResponseDTO::of)
+                .toList();
+    }
+
 }

@@ -4,7 +4,9 @@ import edu.triana.salesianos.culturalia.dto.CrearOrganizadorDTO;
 import edu.triana.salesianos.culturalia.dto.OrganizadorResponseDTO;
 import edu.triana.salesianos.culturalia.error.notFound.OrganizadorNotFoundException;
 import edu.triana.salesianos.culturalia.model.Organizador;
+import edu.triana.salesianos.culturalia.model.Taller;
 import edu.triana.salesianos.culturalia.repository.OrganizadorRepository;
+import edu.triana.salesianos.culturalia.repository.TallerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.List;
 public class OrganizadorService {
 
     private final OrganizadorRepository organizadorRepository;
+    private final TallerRepository tallerRepository;
 
     public OrganizadorResponseDTO save(CrearOrganizadorDTO dto) {
         Organizador nuevo = Organizador.builder()
@@ -54,9 +57,14 @@ public class OrganizadorService {
     }
 
     public void deleteById(Long id) {
-        if (!organizadorRepository.existsById(id)) {
-            throw new OrganizadorNotFoundException(id);
+        Organizador organizador = organizadorRepository.findById(id)
+                .orElseThrow(() -> new OrganizadorNotFoundException(id));
+        for (Taller taller : organizador.getTalleres()) {
+            taller.setOrganizador(null);
         }
-        organizadorRepository.deleteById(id);
+        tallerRepository.saveAll(organizador.getTalleres());
+        organizadorRepository.delete(organizador);
     }
+
+
 }

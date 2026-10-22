@@ -2,15 +2,14 @@ package edu.triana.salesianos.culturalia.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,5 +22,5 @@ public class Participante {
 
     @ManyToMany(mappedBy = "participantes")
     @Builder.Default
-    private HashSet<Taller> talleres = new HashSet<>();
+    private Set<Taller> talleres = new HashSet<>();
 }

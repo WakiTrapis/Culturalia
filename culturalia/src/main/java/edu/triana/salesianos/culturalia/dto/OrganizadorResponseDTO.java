@@ -17,6 +17,9 @@ public class OrganizadorResponseDTO {
     private String email;
 
     public static OrganizadorResponseDTO of(Organizador organizador) {
+        if (organizador == null) {
+            return null;
+        }
         return OrganizadorResponseDTO.builder()
                 .id(organizador.getId())
                 .nombre(organizador.getNombre())

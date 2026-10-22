@@ -23,15 +23,18 @@ public class TallerResponseDTO {
     private List<ParticipanteResponseDTO> participantes;
 
     public static TallerResponseDTO of(Taller taller) {
+        if (taller == null) return null;
+
         return TallerResponseDTO.builder()
                 .id(taller.getId())
                 .titulo(taller.getTitulo())
                 .fechaHoraInicio(LocalDateTime.parse(taller.getFechaHoraInicio()))
                 .fechaHoraFin(LocalDateTime.parse(taller.getFechaHoraFin()))
-                .organizador(taller.getOrganizador() != null ? OrganizadorResponseDTO.of(taller.getOrganizador()) : null)
-                .participantes(taller.getParticipantes() != null
-                        ? taller.getParticipantes().stream().map(ParticipanteResponseDTO::of).toList()
-                        : List.of())
+                .organizador(OrganizadorResponseDTO.of(taller.getOrganizador()))
+                .participantes(taller.getParticipantes() != null ?
+                        taller.getParticipantes().stream()
+                                .map(ParticipanteResponseDTO::of)
+                                .toList() : List.of())
                 .build();
     }
 }
