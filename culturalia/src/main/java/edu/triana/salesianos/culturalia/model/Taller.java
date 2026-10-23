@@ -1,16 +1,13 @@
 package edu.triana.salesianos.culturalia.model;
 
+import edu.triana.salesianos.culturalia.validation.FechaFinPosteriorAInicio;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.*;
+import java.util.*;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -18,13 +15,13 @@ public class Taller {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private String titulo;
     private String fechaHoraInicio;
     private String fechaHoraFin;
 
     @ManyToOne
-    @JoinColumn(name = "organizador_id")
+    @JoinColumn(name = "organizador_id", nullable = true)
     private Organizador organizador;
 
     @ManyToMany
@@ -34,6 +31,6 @@ public class Taller {
             inverseJoinColumns = @JoinColumn(name = "participante_id")
     )
     @Builder.Default
-    private List<Participante> participantes = new ArrayList<>();
+    private Set<Participante> participantes = new HashSet<>();
 
 }
